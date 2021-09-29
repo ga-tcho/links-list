@@ -1,0 +1,7 @@
+links-list-db:
+    image: mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports:
+        - "53306:3306"
+    environment:
+        MYSQL_ROOT_PASSWORD: password
