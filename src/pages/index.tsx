@@ -1,6 +1,6 @@
 // /pages/index.tsx
-import Head from 'next/head';
 import { gql, useQuery, useMutation } from '@apollo/client';
+import Head from 'next/head';
 import Link from 'next/link';
 import { AwesomeLink } from '../components/AwesomeLink';
 

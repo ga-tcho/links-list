@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
-import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   const { user } = useUser();
@@ -41,7 +40,7 @@ const Header = () => {
                   Logout
                 </a>
               </Link>
-              <Image alt='profile' className='rounded-full w-12 h-12' src={user.picture} />
+              <img alt='profile' className='rounded-full w-12 h-12' src={user.picture} />
             </div>
           ) : (
             <Link href='/api/auth/login'>
