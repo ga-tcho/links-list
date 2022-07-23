@@ -1,16 +1,16 @@
 import { nonNull, objectType, stringArg, intArg, extendType } from 'nexus';
-import { User } from './User'
+import { User } from './User';
 
 export const Link = objectType({
   name: 'Link',
   definition(t) {
-    t.string('id')
+    t.string('id');
     t.int('index');
-    t.string('title')
-    t.string('url')
-    t.string('description')
-    t.string('imageUrl')
-    t.string('category')
+    t.string('title');
+    t.string('url');
+    t.string('description');
+    t.string('imageUrl');
+    t.string('category');
     t.list.field('users', {
       type: User,
       async resolve(_parent, _args, ctx) {
@@ -20,39 +20,39 @@ export const Link = objectType({
               id: _parent.id,
             },
           })
-          .users()
+          .users();
       },
-    })
+    });
   },
-})
+});
 
 export const Edge = objectType({
   name: 'Edge',
   definition(t) {
-    t.string('cursor')
+    t.string('cursor');
     t.field('node', {
       type: Link,
-    })
+    });
   },
-})
+});
 
 export const PageInfo = objectType({
   name: 'PageInfo',
   definition(t) {
-    t.string('endCursor')
-    t.boolean('hasNextPage')
+    t.string('endCursor');
+    t.boolean('hasNextPage');
   },
-})
+});
 
 export const Response = objectType({
   name: 'Response',
   definition(t) {
-    t.field('pageInfo', { type: PageInfo })
+    t.field('pageInfo', { type: PageInfo });
     t.list.field('edges', {
       type: Edge,
-    })
+    });
   },
-})
+});
 
 // get ALl Links
 export const LinksQuery = extendType({
@@ -65,45 +65,45 @@ export const LinksQuery = extendType({
         after: stringArg(),
       },
       async resolve(_, args, ctx) {
-        let queryResults = null
+        let queryResults = null;
 
         if (args.after) {
           queryResults = await ctx.prisma.link.findMany({
-            take: args.first, 
+            take: args.first,
             skip: 1,
             cursor: {
               id: args.after,
             },
-          })
+          });
         } else {
           queryResults = await ctx.prisma.link.findMany({
             take: args.first,
-          })
+          });
         }
 
         if (queryResults.length > 0) {
-          const lastLinkInResults = queryResults[queryResults.length - 1]
-          const myCursor = lastLinkInResults.id
+          const lastLinkInResults = queryResults[queryResults.length - 1];
+          const myCursor = lastLinkInResults.id;
 
           const secondQueryResults = await ctx.prisma.link.findMany({
             take: args.first,
             cursor: {
               id: myCursor,
             },
-          })
+          });
           // return response
           const result = {
             pageInfo: {
               endCursor: myCursor,
-              hasNextPage: secondQueryResults.length >= args.first, 
+              hasNextPage: secondQueryResults.length >= args.first,
             },
-            edges: queryResults.map(link => ({
+            edges: queryResults.map((link) => ({
               cursor: link.id,
               node: link,
             })),
-          }
+          };
 
-          return result
+          return result;
         }
         //
         return {
@@ -112,9 +112,9 @@ export const LinksQuery = extendType({
             hasNextPage: false,
           },
           edges: [],
-        }
+        };
       },
-    })
+    });
   },
 });
 
@@ -132,7 +132,7 @@ export const CreateLinkMutation = extendType({
       },
       async resolve(_parent, args, ctx) {
         if (!ctx.user) {
-          throw new Error(`You need to be logged in to perform an action`)
+          throw new Error(`You need to be logged in to perform an action`);
         }
 
         const user = await ctx.prisma.user.findUnique({
@@ -141,7 +141,7 @@ export const CreateLinkMutation = extendType({
           },
         });
 
-         if (user.role !== 'ADMIN') {
+        if (user.role !== 'ADMIN') {
           throw new Error(`You do not have permission to perform action`);
         }
 
