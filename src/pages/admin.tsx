@@ -56,9 +56,9 @@ const Admin = () => {
         body: formData,
       }),
       {
-        loading: 'Uploading...',
+        loading: 'loading..',
         success: 'Image successfully uploaded!🎉',
-        error: `Upload failed 😥 Please try again ${error}`,
+        error: `ぷっちょあああああ 😥 ${error}`,
       },
     );
   };
@@ -69,9 +69,9 @@ const Admin = () => {
     const variables = { title, url, category, description, imageUrl };
     try {
       toast.promise(createLink({ variables }), {
-        loading: 'loading..',
+        loading: 'Creating new link..',
         success: 'Link successfully created!🎉',
-        error: `ぷっちょああああああ 😥 ${error}`,
+        error: `Something went wrong 😥 Please try again -  ${error}`,
       });
     } catch (error) {
       console.error(error);
