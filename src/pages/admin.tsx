@@ -69,9 +69,9 @@ const Admin = () => {
     const variables = { title, url, category, description, imageUrl };
     try {
       toast.promise(createLink({ variables }), {
-        loading: 'Creating new link..',
+        loading: 'loading..',
         success: 'Link successfully created!🎉',
-        error: `Something went wrong 😥 Please try again -  ${error}`,
+        error: `ぷっちょああああああ 😥 ${error}`,
       });
     } catch (error) {
       console.error(error);
